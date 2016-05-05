@@ -2,8 +2,8 @@
 %{!?scl:%global pkg_name %{name}}
 
 Name:           %{?scl_prefix}python-virtualenv
-Version:        1.10.1
-Release:        2.sc1%{?dist}
+Version:        13.1.0
+Release:        1%{?dist}
 Summary:        Tool to create isolated Python environments
 
 Group:          Development/Languages
@@ -59,6 +59,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/virtualenv*
 
 %changelog
+* Fri Apr 15 2016 Charalampos Stratakis <cstratak@redhat.com> - 13.1.0-1
+- Update to 13.1.0
+Resolves: rhbz#1327559
+
 * Tue Aug 20 2013 Robert Kuska <rkuska@redhat.com> - 1.10.1-2
 - Bundle unbudled libraries again
 Resolves: rhbz#995284
