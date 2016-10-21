@@ -3,7 +3,7 @@
 
 Name:           %{?scl_prefix}python-virtualenv
 Version:        13.1.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Tool to create isolated Python environments
 
 Group:          Development/Languages
@@ -18,6 +18,11 @@ BuildRequires:  %{?scl_prefix}python-sphinx
 Requires:       %{?scl_prefix}python-setuptools
 Requires:       %{?scl_prefix}python-devel
 
+# Patch that shows a custom error message when a FILE passed to virtualenv
+# to be used as 'home dir' already exists and is NOT a directory.
+# rhbz#1353206
+Patch0:		polish-error-msg-when-file-is-passed.patch
+
 %description
 virtualenv is a tool to create isolated Python environments. virtualenv
 is a successor to workingenv, and an extension of virtual-python. It is
@@ -27,6 +32,8 @@ licensed under an MIT-style permissive license.
 %prep
 %setup -q -n virtualenv-%{version}
 %{__sed} -i -e "1s|#!/usr/bin/env python||" virtualenv.py 
+
+%patch0 -p1
 
 %build
 # Build code
@@ -57,6 +64,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/virtualenv*
 
 %changelog
+* Tue Jul 19 2016 Charalampos Stratakis <cstratak@redhat.com> - 13.1.2-2
+- Added a patch that shows a custom error message when a FILE passed to
+  virtualenv to be used as 'home dir' already exists and is NOT a directory.
+Resolves: rhbz#1353206
+
 * Sat Feb 13 2016 Robert Kuska <rkuska@redhat.com> 13.1.2-1
 - Update to 13.1.2
 
