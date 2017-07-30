@@ -1,0 +1,12 @@
+diff --git a/virtualenv.py b/virtualenv.py
+index d1a344a..1d46506 100755
+--- a/virtualenv.py
++++ b/virtualenv.py
+@@ -613,7 +613,6 @@ def main():
+     parser.add_option(
+         "--download",
+         dest="download",
+-        default=True,
+         action="store_true",
+         help="Download preinstalled packages from PyPI.",
+     )
