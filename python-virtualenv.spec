@@ -3,7 +3,7 @@
 
 Name:           %{?scl_prefix}python-virtualenv
 Version:        15.1.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Tool to create isolated Python environments
 
 Group:          Development/Languages
@@ -11,6 +11,12 @@ License:        MIT
 URL:            https://pypi.python.org/pypi/virtualenv
 Source0:        https://files.pythonhosted.org/packages/source/v/virtualenv/virtualenv-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{pkg_name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+# Disable downloading pip, wheel and setuptools from pypi
+# automatically when creating a new venv.
+# Upstream commit that was reverted:
+# https://github.com/pypa/virtualenv/commit/3d7361ff2e31472cb69d00150fbdf5a3c9af2a0d
+Patch0: disable-pypi-downloads-on-venv-creation.patch
 
 BuildArch:      noarch
 BuildRequires:  %{?scl_prefix}python-devel
@@ -27,6 +33,7 @@ licensed under an MIT-style permissive license.
 %prep
 %setup -q -n virtualenv-%{version}
 %{__sed} -i -e "1s|#!/usr/bin/env python||" virtualenv.py
+%patch0 -p1
 
 %build
 # Build code
@@ -57,6 +64,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/virtualenv*
 
 %changelog
+* Mon Jun 19 2017 Charalampos Stratakis <cstratak@redhat.com> 15.1.0-2
+- Disable automatic downloads from pypi on new venv creation
+Resolves: rhbz#1469594
+
 * Mon Jun 19 2017 Charalampos Stratakis <cstratak@redhat.com> 15.1.0-1
 - Update to 15.1.0 for rh-python36
 
